@@ -2,16 +2,24 @@ import sqlite3
 from datetime import datetime
 from database import get_connection
 
+def get_required_input(prompt):
+    while True:
+        value = input(prompt)
+        if value.strip() != "":
+            return value
+        else:
+            print("This field is required. Please enter a value.")
+
 def log_call():
     print("\n--- Log New Call ---")
 
-    caller_name = input("Caller name: ")
-    caller_phone = input("Caller phone number: ")
-    caller_address = input("Caller address: ")
-    issue = input("Issue: ")
-    troubleshooting = input("Troubleshooting steps taken: ")
-    resolution = input("Resolution: ")
-    agent_name = input("Agent name: ")
+    caller_name = get_required_input("Caller name: ")
+    caller_phone = get_required_input("Caller phone number: ")
+    caller_address = get_required_input("Caller address: ")
+    issue = get_required_input("Issue: ")
+    troubleshooting = get_required_input("Troubleshooting steps taken: ")
+    resolution = get_required_input("Resolution: ")
+    agent_name = get_required_input("Agent name: ")
 
     now = datetime.now()
     date = now.strftime("%Y-%m-%d")
