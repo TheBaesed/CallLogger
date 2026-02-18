@@ -97,4 +97,32 @@ def search_calls():
             print(f"Resolution: {row[5]}")
             print("---")
 
+def view_call_detail():
+    print("\n--- View Call Detail ---")
+    call_id = input("Enter call ID: ")
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT * FROM calls WHERE id = ?
+    """, (call_id,))
+    
+    row = cursor.fetchone()
+    connection.close()
+
+    if row is None:
+        print("No call found with that ID.")
+    else:
+        print(f"\n--- Call Id: {row[0]} ---")
+        print(f"Date: {row[1]}")
+        print(f"Time: {row[2]}")
+        print(f"Caller Name: {row[3]}")
+        print(f"Phone: {row[4]}")
+        print(f"Address: {row[5]}")
+        print(f"Issue: {row[6]}")
+        print(f"Troubleshooting: {row[7]}")
+        print(f"Resolution: {row[8]}")
+        print(f"Agent: {row[9]}")
+
 
