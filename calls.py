@@ -28,4 +28,29 @@ def log_call():
     connection.commit()
     connection.close()
 
+def view_recent_calls():
+    print("\n--- Recent Calls ---")
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT id, date, time, caller_name, issue
+        FROM calls
+        ORDER BY id DESC
+        LIMIT 10
+        """)
+        
+    rows = cursor.fetchall()
+    connection.close()
+        
+    if len(rows) == 0:
+        print("No calls logged yet.")
+    else:
+        for row in rows:
+            print(f"\nID: {row[0]} | {row[1]} {row[2]}")
+            print(f"Caller: {row[3]}")
+            print(f"Issue: {row[4]}")
+            print("---")
+
 
