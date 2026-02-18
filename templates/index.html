@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Recent Calls</h2>
+
+{% if calls %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Caller</th>
+            <th>Issue</th>
+            <th>Detail</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for call in calls %}
+        <tr>
+            <td>{{ call[0] }}</td>
+            <td>{{ call[1] }}</td>
+            <td>{{ call[2] }}</td>
+            <td>{{ call[3] }}</td>
+            <td>{{ call[4] }}</td>
+            <td><a href="/call/{{ call[0] }}">View</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No calls logged yet.</p>
+{% endif %}
+{% endblock %}

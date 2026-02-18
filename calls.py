@@ -133,4 +133,63 @@ def view_call_detail():
         print(f"Resolution: {row[8]}")
         print(f"Agent: {row[9]}")
 
+def log_call_db(caller_name, caller_phone, caller_address, issue, troubleshooting, resolution, agent_name):
+    from datetime import datetime
+    now = datetime.now()
+    date = now.strftime("%Y-%m-%d")
+    time = now.strftime("%H:%M:%S")
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO calls (date, time, caller_name, caller_phone, caller_address, issue, troubleshooting, resolution, agent_name)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (date, time, caller_name, caller_phone, caller_address, issue, troubleshooting, resolution, agent_name))
+
+    connection.commit()
+    connection.close()
+    
+def get_recent_calls():
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT id, date, time, caller_name, issue
+        FROM calls
+        ORDER BY id DESC
+        LIMIT 10
+    """)
+
+    rows = cursor.fetchall()
+    connection.close()
+    return rows
+
+def get_call_by_id(call_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM calls WHERE id = ?", (call_id,))
+
+    row = cursor.fetchone()
+    connection.close()
+    return row
+
+def search_calls_db(column, term):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(f"""
+        SELECT id, date, time, caller_name, issue, resolution
+        FROM calls
+        WHERE {column} LIKE ?
+        ORDER BY id DESC
+    """, (f"%{term}%",))
+
+    rows = cursor.fetchall()
+    connection.close()
+    return rows
+
+
+
 
