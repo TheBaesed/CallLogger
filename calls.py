@@ -53,4 +53,48 @@ def view_recent_calls():
             print(f"Issue: {row[4]}")
             print("---")
 
+def search_calls():
+    print("\n--- Search Calls ---")
+    print("1. Search by caller name")
+    print("2. Search by phone number")
+    print("3. Search by issue")
+
+    choice = input("\nSearch by: ")
+
+    if choice == "1":
+        term = input("Enter caller name: ")
+        column = "caller_name"
+    elif choice == "2":
+        term = input("Enter phone number: ")
+        column = "caller_phone"
+    elif choice == "3":
+        term = input("Enter issue keyword: ")
+        column = "issue"
+    else:
+        print("Invalid Choice.")
+        return
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(f"""
+        SELECT id, date, time, caller_name, issue, resolution
+        FROM calls
+        WHERE {column} LIKE ?
+        ORDER BY id DESC
+    """, (f"%{term}%",))
+
+    rows = cursor.fetchall()
+    connection.close()
+
+    if len(rows) == 0:
+        print("No matching calls found.")
+    else:
+        for row in rows:
+            print(f"\nID: {row[0]} | {row[1]} {row[2]}")
+            print(f"Caller: {row[3]}")
+            print(f"Issue: {row[4]}")
+            print(f"Resolution: {row[5]}")
+            print("---")
+
 
