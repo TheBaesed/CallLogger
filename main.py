@@ -1,9 +1,11 @@
+from calls import log_call
+
 def show_menu():
     print("\nEPB Call Logger")
     print("---------------")
     print("1. Log a new call")
     print("2. View recent calls")
-    print("3. Searh calls")
+    print("3. Search calls")
     print("4. Exit")
 
 def main():
@@ -12,7 +14,7 @@ def main():
         choice = input("\nEnter your choice: ")
 
         if choice == "1":
-            print("Log a call - coming soon")
+            log_call()
         elif choice == "2":
             print("View calls - coming soon")
         elif choice == "3":
